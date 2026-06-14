@@ -1,7 +1,7 @@
 # Deploy runbook — Regina Caeli Creations
 
-The site is the static folder **`site/`**. Three steps: push to GitHub →
-deploy to Vercel → point the Strato domain at Vercel.
+The site is a zero-build static site at the **repo root**. Three steps: push to
+GitHub → deploy to Vercel → point the Strato domain at Vercel.
 
 ---
 
@@ -35,8 +35,8 @@ git push -u origin main
 
 1. Go to **vercel.com → Add New → Project** and import the
    `ReginaCaeliCreations` GitHub repo.
-2. In the import settings set **Root Directory = `site`**.
-   (Framework preset: **Other**. No build command — it's a static site.)
+2. Leave **Root Directory = `./`** (the site is at the repo root).
+   Framework preset: **Other**. No build command — it's a static site.
 3. Click **Deploy**. You'll get a live URL like
    `regina-caeli-creations.vercel.app`.
 

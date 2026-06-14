@@ -15,25 +15,23 @@ A zero-build static site — plain HTML + CSS, no framework. It can be served by
 static host (Vercel, GitHub Pages, Strato web hosting).
 
 ```
-site/
 ├── index.html      # the page
 ├── styles.css      # brand styles (deep green / gold / cream palette)
 ├── vercel.json     # static hosting config
-└── assets/         # logo + cake imagery
+├── assets/         # logo + cake imagery
+└── design-source/  # original brand artwork (not deployed)
 ```
 
 ## Local preview
 
 ```bash
-cd site
 python3 -m http.server 8080   # then open http://localhost:8080
 ```
 
 ## Deploy (Vercel)
 
-The project root for Vercel is the `site/` directory (set **Root Directory = `site`**
-in project settings, or run `vercel` from inside `site/`). No build command is needed —
-Vercel serves it as a static site.
+The site lives at the repo root, so no Root Directory or build command is needed —
+Vercel serves it as a static site and auto-deploys on every push to `main`.
 
 Custom domain `reginacaelicreations.com` is configured in Vercel → Settings → Domains,
-with DNS pointed from Strato (see deploy notes).
+with DNS pointed from Strato (see [DEPLOY.md](DEPLOY.md)).
