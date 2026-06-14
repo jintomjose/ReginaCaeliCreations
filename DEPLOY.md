@@ -7,7 +7,8 @@ Status:
 - [x] **1. Pushed to GitHub** — https://github.com/jintomjose/ReginaCaeliCreations
 - [x] **2. Deployed to Vercel** — https://regina-caeli-creations.vercel.app
       (project `regina-caeli-creations`, GitHub-linked → every push auto-deploys)
-- [ ] **3. Strato DNS** — *the only step left, see below*
+- [x] **3. Strato DNS connected** — https://reginacaelicreations.com is **live** with HTTPS
+- [x] **4. Vercel Web Analytics enabled** — script in `index.html`, toggle enabled in dashboard
 
 ---
 
@@ -37,9 +38,11 @@ Vercel rebuilds and redeploys automatically on every push to `main`.
 
 ---
 
-## 3. Connect the Strato domain `reginacaelicreations.com` — TO DO (by you)
+## 3. Connect the Strato domain `reginacaelicreations.com` — DONE
 
-Vercel is waiting on these two DNS records. Add them at Strato:
+These records are set at Strato and resolving; the site is live at
+https://reginacaelicreations.com with HTTPS (www also works). For reference,
+the records added were:
 
 | Type  | Host / Name | Value / Points to      |
 |-------|-------------|------------------------|
@@ -80,3 +83,18 @@ dig www.reginacaelicreations.com +short     # should return cname.vercel-dns.com
 When it resolves, Vercel's **Settings → Domains** shows a green check, issues
 HTTPS, and **https://reginacaelicreations.com** is live (with `www` redirecting
 to the root).
+
+---
+
+## 4. Vercel Web Analytics — DONE
+
+Privacy-friendly, cookieless visitor analytics is enabled.
+
+- The tracking script is in `index.html` (just before `</body>`):
+  ```html
+  <script defer src="/_vercel/insights/script.js"></script>
+  ```
+- Web Analytics is toggled **on** in Vercel → project → **Analytics**.
+- View traffic anytime in the **Analytics** tab. Data comes from real visitors
+  (your own visits may be filtered) and first numbers can take a few minutes.
+- No cookie banner needed — it doesn't use cookies or collect personal data.
