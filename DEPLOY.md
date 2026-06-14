@@ -3,87 +3,80 @@
 The site is a zero-build static site at the **repo root**. Three steps: push to
 GitHub → deploy to Vercel → point the Strato domain at Vercel.
 
+Status:
+- [x] **1. Pushed to GitHub** — https://github.com/jintomjose/ReginaCaeliCreations
+- [x] **2. Deployed to Vercel** — https://regina-caeli-creations.vercel.app
+      (project `regina-caeli-creations`, GitHub-linked → every push auto-deploys)
+- [ ] **3. Strato DNS** — *the only step left, see below*
+
 ---
 
-## 1. Push to GitHub
+## 1. Push to GitHub — DONE
 
-The code is already committed locally on branch `main`. To publish it:
+Code is on `main` at https://github.com/jintomjose/ReginaCaeliCreations.
+To publish future changes, just commit and push:
 
 ```bash
-# Authenticate once (opens a browser):
-gh auth login
-
-# Create the repo under your account and push in one go:
 cd "/Users/jintojose/Tech_Projects/Regina Caeli Bakes"
-gh repo create ReginaCaeliCreations --public --source=. --remote=origin --push
+git add -A && git commit -m "your message" && git push
 ```
 
-If you already have the repo **WebApp-Annus-cakes.app** on GitHub and want to
-rename + reuse it instead of creating a new one:
-
-```bash
-gh repo rename ReginaCaeliCreations --repo jintomjose/WebApp-Annus-cakes.app
-git remote add origin https://github.com/jintomjose/ReginaCaeliCreations.git
-git push -u origin main
-```
-
-> Final repo URL: `https://github.com/jintomjose/ReginaCaeliCreations`
+Vercel rebuilds and redeploys automatically on every push to `main`.
 
 ---
 
-## 2. Deploy to Vercel
+## 2. Deploy to Vercel — DONE
 
-1. Go to **vercel.com → Add New → Project** and import the
-   `ReginaCaeliCreations` GitHub repo.
-2. Leave **Root Directory = `./`** (the site is at the repo root).
-   Framework preset: **Other**. No build command — it's a static site.
-3. Click **Deploy**. You'll get a live URL like
-   `regina-caeli-creations.vercel.app`.
-
-Every future `git push` to `main` auto-deploys.
+- Project: **regina-caeli-creations** (team: Notio Spiritus)
+- Linked to the GitHub repo, so pushes auto-deploy.
+- Live preview URL: **https://regina-caeli-creations.vercel.app**
+- The custom domains `reginacaelicreations.com` and `www.reginacaelicreations.com`
+  are already **added to the project** in Vercel — they go live the moment the
+  Strato DNS records below resolve. Vercel issues the HTTPS certificate
+  automatically.
 
 ---
 
-## 3. Connect the Strato domain `reginacaelicreations.com`
+## 3. Connect the Strato domain `reginacaelicreations.com` — TO DO (by you)
 
-### a) Add the domain in Vercel
-Vercel → your project → **Settings → Domains** → add
-`reginacaelicreations.com` **and** `www.reginacaelicreations.com`.
-Vercel will then show you the exact DNS records to create. They are normally:
+Vercel is waiting on these two DNS records. Add them at Strato:
 
-| Type  | Name / Host | Value                  |
+| Type  | Host / Name | Value / Points to      |
 |-------|-------------|------------------------|
 | A     | `@` (root)  | `76.76.21.21`          |
 | CNAME | `www`       | `cname.vercel-dns.com` |
 
-(Use whatever Vercel shows if it differs — those are authoritative.)
-
-### b) Set the records at Strato
-1. Log in at **strato.com** → **Domains** → select `reginacaelicreations.com`
-   → **DNS settings / DNS-Verwaltung**.
-2. **A record** for the root domain:
-   - Host/Name: `@` (or leave blank — the root)
-   - Value/Points to: `76.76.21.21`
-3. **CNAME record** for www:
+### Steps at Strato
+1. Log in at **strato.com** → **Domains / Domainverwaltung** → select
+   `reginacaelicreations.com`.
+2. Open **DNS settings** (German: *DNS-Verwaltung* / *DNS-Einstellungen*).
+   If asked, choose **"use your own DNS settings"** (*eigene DNS-Einstellungen
+   verwenden*).
+3. **Edit/replace the root A record:**
+   - Host/Name: `@` (or blank — the root domain)
+   - Type: `A`
+   - Value: `76.76.21.21`
+4. **Add a CNAME for www:**
    - Host/Name: `www`
-   - Value/Target: `cname.vercel-dns.com`
-4. If Strato auto-created default A records (e.g. an 81.169.x.x "parking"
-   address) or a `www` redirect, **delete/replace those** so they don't
-   conflict with the records above.
-5. Save.
+   - Type: `CNAME`
+   - Value: `cname.vercel-dns.com`
+5. **Remove conflicts:** delete any default Strato A record (e.g. an
+   `81.169.x.x` parking address) and any existing `www` redirect, so they don't
+   fight the records above.
+6. Save.
 
-> Strato sometimes disables custom A/CNAME records while a "website package"
-> or domain parking is active on the domain — if the DNS fields are greyed
-> out, turn off parking / "Strato website" for this domain first.
+> If the DNS fields are greyed out, a Strato "website package" / domain parking
+> is active on this domain — turn that off for `reginacaelicreations.com` first,
+> then the DNS fields become editable.
 
-### c) Wait & verify
-DNS propagation takes anywhere from a few minutes to a couple of hours.
-Vercel's Domains page shows a green check when it's verified, and it
-provisions the HTTPS certificate automatically. Then
-`https://reginacaelicreations.com` is live.
+### Verify
+DNS propagation takes minutes to a couple of hours. Check with:
 
-Check propagation:
 ```bash
-dig reginacaelicreations.com +short
-dig www.reginacaelicreations.com +short
+dig reginacaelicreations.com +short        # should return 76.76.21.21
+dig www.reginacaelicreations.com +short     # should return cname.vercel-dns.com
 ```
+
+When it resolves, Vercel's **Settings → Domains** shows a green check, issues
+HTTPS, and **https://reginacaelicreations.com** is live (with `www` redirecting
+to the root).
